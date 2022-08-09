@@ -216,7 +216,7 @@ const theme: Theme = {
         backgroundColor: "background",
         backgroundImage: `url("./images/background.jpeg")`,
         boxShadow: "inset 0 0 0 1000px rgba(0,0,0,.4)",
-        backgroundPosition: "63%",
+        backgroundPosition: "57%",
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
         transition: "all .125s linear",
