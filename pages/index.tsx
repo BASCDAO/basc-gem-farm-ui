@@ -109,7 +109,7 @@ const StakePage = () => {
                 {/**Vault state: <b>{isLocked ? "locked" : "unlocked"}</b>
                  {(testStakedCount/6001).toFixed(2)}%
                 */}
-                <b>Total Vaulted : {testStakedCount}/6001</b>
+                <b>BANANA BANK : {testStakedCount}/6001</b>
                 <br />
               </Text>
               <Text
