@@ -225,7 +225,7 @@ const theme: Theme = {
       img: {
         maxWidth: "100%",
         height: "auto",
-        borderColor: "rgb(0 0 0 / 55%)",
+        borderColor: "rgb(255 240 8 / 88%)",
       },
 
       p: {
