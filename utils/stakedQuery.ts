@@ -3,10 +3,10 @@ import { initGemBank } from "../lib/gem-farm/common/gem-bank"
 import { PublicKey } from "@solana/web3.js"
 const solanaWeb3 =  require("@solana/web3.js");
 const solana = new solanaWeb3.Connection(process.env.NEXT_PUBLIC_SOLANA_RPC_HOST_MAINNET_BETA);
-const results: { wallet: string; mint: string }[] = [];
-const total: { total: number }[] = [];
 
 export async function getStakedUser(query: string) {
+    const results: { wallet: string; mint: string }[] = [];
+    const total: { total: number }[] = [];
     const words = query;
     if (words === "total") {
       const bankClient = await initGemBank(solana);
