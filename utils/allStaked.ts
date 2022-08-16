@@ -2,11 +2,10 @@
 import { initGemBank } from "../lib/gem-farm/common/gem-bank"
 import { PublicKey } from "@solana/web3.js"
 const solanaWeb3 =  require("@solana/web3.js");
-const solana = new solanaWeb3.Connection('https://solana-api.projectserum.com');
-const results: { wallet: string; mint: string }[] = [];
-
+const solana = new solanaWeb3.Connection(process.env.NEXT_PUBLIC_SOLANA_RPC_HOST_MAINNET_BETA);
 
 export async function getStaked(query: string) {
+    const results: { wallet: string; mint: string }[] = [];
     const words = query;
       const bankClient = await initGemBank(solana);
       const allVaults = await bankClient.fetchAllVaultPDAs(
