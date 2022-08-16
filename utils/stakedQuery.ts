@@ -4,10 +4,23 @@ import { PublicKey } from "@solana/web3.js"
 const solanaWeb3 =  require("@solana/web3.js");
 const solana = new solanaWeb3.Connection(process.env.NEXT_PUBLIC_SOLANA_RPC_HOST_MAINNET_BETA);
 const results: { wallet: string; mint: string }[] = [];
-
+const total: { total: number }[] = [];
 
 export async function getStakedUser(query: string) {
     const words = query;
+    if (words === "total") {
+      const bankClient = await initGemBank(solana);
+      const allVaults = await bankClient.fetchAllVaultPDAs(
+      new PublicKey('i7Z46YuSiej4LMYRHvhffH5MmuteuHUjFaVVqVfG5TP' as unknown as PublicKey)
+      );
+      let gemCount = 0;
+      for(var vault of allVaults) {
+        gemCount += +vault.account.gemCount;
+      }
+      total.push({ total: gemCount});
+      return total
+    }
+    else {
       const bankClient = await initGemBank(solana);
       const allVaults = await bankClient.fetchAllVaultPDAs(
         new PublicKey('i7Z46YuSiej4LMYRHvhffH5MmuteuHUjFaVVqVfG5TP' as unknown as PublicKey)
@@ -26,4 +39,5 @@ export async function getStakedUser(query: string) {
         }
       }
       return results
+    }
   };
