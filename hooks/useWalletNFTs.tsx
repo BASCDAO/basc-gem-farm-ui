@@ -38,7 +38,7 @@ const useWalletNFTs = (creators: string[] = []) => {
     console.log(NFTs)
     const filtered = creators
       ? NFTs.filter((NFT) => {
-          const obj = NFT.onchainMetadata?.updateAuthority == "BasC5At2AGkUi2ApemqAgmfPUUSRP76VjWi9Jek8uLrZ"
+        const obj = NFT.onchainMetadata?.updateAuthority == "BasC5At2AGkUi2ApemqAgmfPUUSRP76VjWi9Jek8uLrZ" && NFT.onchainMetadata?.data.symbol == "BASC"
           return obj
         })
       : NFTs
