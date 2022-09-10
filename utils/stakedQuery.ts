@@ -20,6 +20,21 @@ export async function getStakedUser(query: string) {
       total.push({ total: gemCount});
       return total
     }
+    else if (words.startsWith("getAcc-")) {
+      let tmp = words.slice(7)
+      const bankClient = await initGemBank(solana);
+      const allVaults = await bankClient.fetchAllVaultPDAs(
+        new PublicKey('i7Z46YuSiej4LMYRHvhffH5MmuteuHUjFaVVqVfG5TP' as unknown as PublicKey)
+      );
+      for (var Vault of allVaults) {
+        if (Vault.account.owner.toBase58() === tmp) {
+          const vaultAccount = Vault.account.authority.toBase58();
+          const owner = Vault.account.owner.toBase58();
+          results.push({ wallet: vaultAccount, mint: owner });
+        }
+      }
+      return results
+    }
     else {
       const bankClient = await initGemBank(solana);
       const allVaults = await bankClient.fetchAllVaultPDAs(
