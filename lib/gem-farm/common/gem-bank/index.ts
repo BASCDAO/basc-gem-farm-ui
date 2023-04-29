@@ -10,11 +10,11 @@ import {
   GEM_BANK_PROG_ID,
   GemBankClient,
   WhitelistType,
-} from '../gemworks/dist';
+} from '@gemfix/dist';
 import { Connection, Keypair, PublicKey } from '@solana/web3.js';
 import { SignerWalletAdapter } from '@solana/wallet-adapter-base';
 import { NodeWallet, programs } from '@metaplex/js';
-import { IDL } from "../gemworks/dist/types/gem_bank"
+import { IDL } from "@gemfix/dist/types/gem_bank"
 
 //when we only want to view vaults, no need to connect a real wallet.
 export function createFakeWallet() {
