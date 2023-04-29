@@ -21,10 +21,10 @@ import {
   findWhitelistProofPDA,
   GEM_FARM_PROG_ID,
   GEM_BANK_PROG_ID,
-} from '@gemfix/dist';
+} from 'gem-farm-fix/dist';
 import { programs } from '@metaplex/js';
-import { IDL as GemBankIDL } from "@gemfix/dist/types/gem_bank"
-import { IDL as GemFarmIDL} from "@gemfix/dist/types/gem_farm"
+import { IDL as GemBankIDL } from "gem-farm-fix/dist/types/gem_bank"
+import { IDL as GemFarmIDL} from "gem-farm-fix/dist/types/gem_farm"
 
 export async function initGemFarm(
   conn: Connection,
