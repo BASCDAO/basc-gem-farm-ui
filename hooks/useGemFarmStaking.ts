@@ -1,4 +1,4 @@
-import { findFarmerPDA } from "@gemworks/gem-farm-ts"
+import { findFarmerPDA } from "@gemfix/dist"
 import { SignerWalletAdapter } from "@solana/wallet-adapter-base"
 import { useEffect, useState, useCallback } from "react"
 import { useAnchorWallet, useConnection } from "@solana/wallet-adapter-react"
