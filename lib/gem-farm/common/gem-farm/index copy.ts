@@ -1,17 +1,7 @@
-import { Connection, Keypair, PublicKey } from '@solana/web3.js';
-import { SignerWalletAdapter } from '@solana/wallet-adapter-base';
-import { BN, Idl } from '@project-serum/anchor';
+import { Connection, Keypair, PublicKey } from "@solana/web3.js"
+import { SignerWalletAdapter } from "@solana/wallet-adapter-base"
+import { BN, Idl } from "@project-serum/anchor"
 import { createFakeWallet } from "../gem-bank"
-{/**import {
-  GemFarmClient,
-  FarmConfig,
-  VariableRateConfig,
-  FixedRateConfig,
-  WhitelistType,
-  findWhitelistProofPDA,
-  GEM_FARM_PROG_ID,
-  GEM_BANK_PROG_ID,
-} from '@gemworks/gem-farm-ts';*/}
 import {
   GemFarmClient,
   FarmConfig,
@@ -20,25 +10,23 @@ import {
   WhitelistType,
   findWhitelistProofPDA,
   GEM_FARM_PROG_ID,
-  GEM_BANK_PROG_ID,
-} from '../gemworks/dist';
-import { programs } from '@metaplex/js';
-import { IDL as GemBankIDL } from "../gemworks/dist/types/gem_bank"
-import { IDL as GemFarmIDL} from "../gemworks/dist/types/gem_farm"
+  GEM_BANK_PROG_ID
+} from "@gemworks/gem-farm-ts"
+import { programs } from "@metaplex/js"
+import { IDL as GemBankIDL } from "@gemworks/gem-farm-ts/dist/types/gem_bank"
+import { IDL as GemFarmIDL} from "@gemworks/gem-farm-ts/dist/types/gem_farm"
 
 export async function initGemFarm(
   conn: Connection,
   wallet?: SignerWalletAdapter
 ) {
-  const walletToUse = wallet ?? createFakeWallet();
-  //const farmIdl = await (await fetch('gem_farm.json')).json();
-  //const bankIdl = await (await fetch('gem_bank.json')).json();
-  return new GemFarm(conn, walletToUse as any, GemFarmIDL, GemBankIDL);
+  const walletToUse = wallet ?? createFakeWallet()
+  return new GemFarm(conn, walletToUse as any, GemFarmIDL, GemBankIDL)
 }
 
 export class GemFarm extends GemFarmClient {
   constructor(conn: Connection, wallet: any, farmIdl: Idl, bankIdl: Idl) {
-    super(conn, wallet, farmIdl, GEM_FARM_PROG_ID, bankIdl, GEM_BANK_PROG_ID);
+    super(conn, wallet, farmIdl, GEM_FARM_PROG_ID, bankIdl, GEM_BANK_PROG_ID)
   }
 
   async initFarmWallet(
@@ -48,8 +36,8 @@ export class GemFarm extends GemFarmClient {
     rewardBType: any,
     farmConfig: FarmConfig
   ) {
-    const farm = Keypair.generate();
-    const bank = Keypair.generate();
+    const farm = Keypair.generate()
+    const bank = Keypair.generate()
 
     const result = await this.initFarm(
       farm,
@@ -61,12 +49,12 @@ export class GemFarm extends GemFarmClient {
       rewardBMint,
       rewardBType,
       farmConfig
-    );
+    )
 
-    console.log('new farm started!', farm.publicKey.toBase58());
-    console.log('bank is:', bank.publicKey.toBase58());
+    console.log("new farm started!", farm.publicKey.toBase58())
+    console.log("bank is:", bank.publicKey.toBase58())
 
-    return { farm, bank, ...result };
+    return { farm, bank, ...result }
   }
 
   async updateFarmWallet(
@@ -79,11 +67,11 @@ export class GemFarm extends GemFarmClient {
       this.wallet.publicKey,
       newConfig,
       newManager
-    );
+    )
 
-    console.log('updated the farm');
+    console.log("updated the farm")
 
-    return result;
+    return result
   }
 
   async authorizeFunderWallet(farm: PublicKey, funder: PublicKey) {
@@ -91,11 +79,11 @@ export class GemFarm extends GemFarmClient {
       farm,
       this.wallet.publicKey,
       funder
-    );
+    )
 
-    console.log('authorized funder', funder.toBase58());
+    console.log("authorized funder", funder.toBase58())
 
-    return result;
+    return result
   }
 
   async deauthorizeFunderWallet(farm: PublicKey, funder: PublicKey) {
@@ -103,11 +91,11 @@ export class GemFarm extends GemFarmClient {
       farm,
       this.wallet.publicKey,
       funder
-    );
+    )
 
-    console.log('DEauthorized funder', funder.toBase58());
+    console.log("DEauthorized funder", funder.toBase58())
 
-    return result;
+    return result
   }
 
   async fundVariableRewardWallet(
@@ -116,12 +104,12 @@ export class GemFarm extends GemFarmClient {
     amount: string,
     duration: string
   ) {
-    const rewardSource = await this.findATA(rewardMint, this.wallet.publicKey);
+    const rewardSource = await this.findATA(rewardMint, this.wallet.publicKey)
 
     const config: VariableRateConfig = {
       amount: new BN(amount),
-      durationSec: new BN(duration),
-    };
+      durationSec: new BN(duration)
+    }
 
     const result = this.fundReward(
       farm,
@@ -129,11 +117,11 @@ export class GemFarm extends GemFarmClient {
       this.wallet.publicKey,
       rewardSource,
       config
-    );
+    )
 
-    console.log('funded variable reward with mint:', rewardMint.toBase58());
+    console.log("funded variable reward with mint:", rewardMint.toBase58())
 
-    return result;
+    return result
   }
 
   async fundFixedRewardWallet(
@@ -150,7 +138,7 @@ export class GemFarm extends GemFarmClient {
     t3RewardRate?: string,
     t3RequiredTenure?: string
   ) {
-    const rewardSource = await this.findATA(rewardMint, this.wallet.publicKey);
+    const rewardSource = await this.findATA(rewardMint, this.wallet.publicKey)
 
     const config: FixedRateConfig = {
       schedule: {
@@ -158,26 +146,26 @@ export class GemFarm extends GemFarmClient {
         tier1: t1RewardRate
           ? {
               rewardRate: new BN(t1RewardRate),
-              requiredTenure: new BN(t1RequiredTenure!),
+              requiredTenure: new BN(t1RequiredTenure!)
             }
           : null,
         tier2: t2RewardRate
           ? {
               rewardRate: new BN(t2RewardRate),
-              requiredTenure: new BN(t2RequiredTenure!),
+              requiredTenure: new BN(t2RequiredTenure!)
             }
           : null,
         tier3: t3RewardRate
           ? {
               rewardRate: new BN(t3RewardRate),
-              requiredTenure: new BN(t3RequiredTenure!),
+              requiredTenure: new BN(t3RequiredTenure!)
             }
           : null,
-        denominator: new BN(denominator),
+        denominator: new BN(denominator)
       },
       amount: new BN(amount),
-      durationSec: new BN(duration),
-    };
+      durationSec: new BN(duration)
+    }
 
     const result = await this.fundReward(
       farm,
@@ -186,11 +174,11 @@ export class GemFarm extends GemFarmClient {
       rewardSource,
       undefined,
       config
-    );
+    )
 
-    console.log('funded fixed reward with mint:', rewardMint.toBase58());
+    console.log("funded fixed reward with mint:", rewardMint.toBase58())
 
-    return result;
+    return result
   }
 
   async cancelRewardWallet(farm: PublicKey, rewardMint: PublicKey) {
@@ -199,11 +187,11 @@ export class GemFarm extends GemFarmClient {
       this.wallet.publicKey,
       rewardMint,
       this.wallet.publicKey
-    );
+    )
 
-    console.log('cancelled reward', rewardMint.toBase58());
+    console.log("cancelled reward", rewardMint.toBase58())
 
-    return result;
+    return result
   }
 
   async lockRewardWallet(farm: PublicKey, rewardMint: PublicKey) {
@@ -211,19 +199,19 @@ export class GemFarm extends GemFarmClient {
       farm,
       this.wallet.publicKey,
       rewardMint
-    );
+    )
 
-    console.log('locked reward', rewardMint.toBase58());
+    console.log("locked reward", rewardMint.toBase58())
 
-    return result;
+    return result
   }
 
   async refreshFarmerWallet(farm: PublicKey, farmerIdentity: PublicKey) {
-    const result = await this.refreshFarmer(farm, farmerIdentity);
+    const result = await this.refreshFarmer(farm, farmerIdentity)
 
-    console.log('refreshed farmer', farmerIdentity.toBase58());
+    console.log("refreshed farmer", farmerIdentity.toBase58())
 
-    return result;
+    return result
   }
 
   async treasuryPayoutWallet(
@@ -236,11 +224,11 @@ export class GemFarm extends GemFarmClient {
       this.wallet.publicKey,
       destination,
       new BN(lamports)
-    );
+    )
 
-    console.log('paid out from treasury', lamports);
+    console.log("paid out from treasury", lamports)
 
-    return result;
+    return result
   }
 
   async initFarmerWallet(farm: PublicKey) {
@@ -248,27 +236,27 @@ export class GemFarm extends GemFarmClient {
       farm,
       this.wallet.publicKey,
       this.wallet.publicKey
-    );
+    )
 
-    console.log('initialized new farmer', this.wallet.publicKey.toBase58());
+    console.log("initialized new farmer", this.wallet.publicKey.toBase58())
 
-    return result;
+    return result
   }
 
   async stakeWallet(farm: PublicKey) {
-    const result = await this.stake(farm, this.wallet.publicKey);
+    const result = await this.stake(farm, this.wallet.publicKey)
 
-    console.log('begun staking for farmer', this.wallet.publicKey.toBase58());
+    console.log("begun staking for farmer", this.wallet.publicKey.toBase58())
 
-    return result;
+    return result
   }
 
   async unstakeWallet(farm: PublicKey) {
-    const result = await this.unstake(farm, this.wallet.publicKey);
+    const result = await this.unstake(farm, this.wallet.publicKey)
 
-    console.log('ended staking for farmer', this.wallet.publicKey.toBase58());
+    console.log("ended staking for farmer", this.wallet.publicKey.toBase58())
 
-    return result;
+    return result
   }
 
   async claimWallet(
@@ -281,11 +269,11 @@ export class GemFarm extends GemFarmClient {
       this.wallet.publicKey,
       rewardAMint,
       rewardBMint
-    );
+    )
 
-    console.log('claimed rewards for farmer', this.wallet.publicKey.toBase58());
+    console.log("claimed rewards for farmer", this.wallet.publicKey.toBase58())
 
-    return result;
+    return result
   }
 
   async flashDepositWallet(
@@ -295,12 +283,12 @@ export class GemFarm extends GemFarmClient {
     gemSource: PublicKey,
     creator: PublicKey
   ) {
-    const farmAcc = await this.fetchFarmAcc(farm);
-    const bank = farmAcc.bank;
+    const farmAcc = await this.fetchFarmAcc(farm)
+    const bank = farmAcc.bank
 
-    const [mintProof, bump] = await findWhitelistProofPDA(bank, gemMint);
-    const [creatorProof, bump2] = await findWhitelistProofPDA(bank, creator);
-    const metadata = await programs.metadata.Metadata.getPDA(gemMint);
+    const [mintProof, bump] = await findWhitelistProofPDA(bank, gemMint)
+    const [creatorProof, bump2] = await findWhitelistProofPDA(bank, creator)
+    const metadata = await programs.metadata.Metadata.getPDA(gemMint)
 
     const result = await this.flashDeposit(
       farm,
@@ -311,11 +299,11 @@ export class GemFarm extends GemFarmClient {
       mintProof,
       metadata,
       creatorProof
-    );
+    )
 
-    console.log('added extra gem for farmer', this.wallet.publicKey.toBase58());
+    console.log("added extra gem for farmer", this.wallet.publicKey.toBase58())
 
-    return result;
+    return result
   }
 
   async addToBankWhitelistWallet(
@@ -328,11 +316,11 @@ export class GemFarm extends GemFarmClient {
       this.wallet.publicKey,
       addressToWhitelist,
       whitelistType
-    );
+    )
 
-    console.log(`${addressToWhitelist.toBase58()} added to whitelist`);
+    console.log(`${addressToWhitelist.toBase58()} added to whitelist`)
 
-    return result;
+    return result
   }
 
   async removeFromBankWhitelistWallet(
@@ -343,10 +331,10 @@ export class GemFarm extends GemFarmClient {
       farm,
       this.wallet.publicKey,
       addressToRemove
-    );
+    )
 
-    console.log(`${addressToRemove.toBase58()} removed from whitelist`);
+    console.log(`${addressToRemove.toBase58()} removed from whitelist`)
 
-    return result;
+    return result
   }
 }
